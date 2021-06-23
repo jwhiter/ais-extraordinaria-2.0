@@ -49,6 +49,7 @@ jobs:
           name: target
       - name: Generate tag
         run: echo ::set-output name=tag::$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
+        id: project
       #- name: Get version
       #  run: VERSION=$(mvn -q help:evaluate -Dexpression=project.version-DforceStdout)
       #- name: Generate tag
