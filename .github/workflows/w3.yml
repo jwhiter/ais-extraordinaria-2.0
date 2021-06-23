@@ -21,7 +21,19 @@ jobs:
           java-version: 11
       - name: Build project with maven
         run: mvn -B package -DskipTests
-        
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: target
+          path: target/*.jar
+          retention-days: 1
+          
+  Ejecucion_test:
+    name: ejecutar Test Unitarios y API REST
+
+    runs-on: ubuntu-20.04
+    needs: [build]
+    steps: 
       - name: Ejecucion Test Unitarios
         run: mvn -B '-Dtest=es.urjc.code.daw.library.unitary.*Test' test
 
@@ -31,32 +43,10 @@ jobs:
       - name: Ejecucion Test Selenium
         run: mvn -B '-Dtest=es.urjc.code.daw.library.e2e.selenium.*Test' test
 
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
-        with:
-          name: target
-          path: target/*.jar
-          retention-days: 1
-          
-  #Ejecucion_test:
-  #  name: ejecutar Test Unitarios y API REST
-
-  #  runs-on: ubuntu-20.04
-  #  needs: [build]
-  #  steps: 
-  #    - name: Ejecucion Test Unitarios
-  #      run: mvn -B '-Dtest=es.urjc.code.daw.library.unitary.*Test' test
-
-  #    - name: Ejecucion Test API REST
-  #      run: mvn -B '-Dtest=es.urjc.code.daw.library.e2e.rest.*Test' test
-      
-      - name: Ejecucion Test Selenium
-        run: mvn -B '-Dtest=es.urjc.code.daw.library.e2e.selenium.*Test' test
-
   publish_in_dockerhub:
     name: Publish in DockerHub
     runs-on: ubuntu-20.04
-    needs: [build]
+    needs: [Ejecucion_test]
     steps:
       - name: Clone repository
         uses: actions/checkout@v2

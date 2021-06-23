@@ -19,21 +19,22 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
+      
+      - name: Build project with Maven
+        run: mvn -DskipTests -B package  
+      
+      
+  Ejecucion_test:
+    name: ejecutar Test Unitarios y API REST
+
+    runs-on: ubuntu-20.04
+    needs: [build]
+    steps: 
       - name: Ejecucion Test Unitarios
         run: mvn -B '-Dtest=es.urjc.code.daw.library.unitary.*Test' test
 
       - name: Ejecucion Test API REST
         run: mvn -B '-Dtest=es.urjc.code.daw.library.e2e.rest.*Test' test
-     # - name: Build project with Maven
-     #   run: mvn -DskipTests -B package  
-      
-      
-  #Ejecucion_test:
-  #  name: ejecutar Test Unitarios y API REST
-
-  #  runs-on: ubuntu-20.04
-  #  needs: [build]
-  #  steps: 
       
       
       
