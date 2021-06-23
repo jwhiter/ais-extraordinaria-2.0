@@ -27,6 +27,11 @@ public class RestTest {
     @BeforeEach
     public void setUp() {
         RestAssured.port = port;
+        String host = System.getProperty("host","localhost");
+        if(host.equals("localhost"))
+            RestAssured.baseURI = "http://"+host+":"+port + "/";
+        else
+            RestAssured.baseURI = "http://"+host+"/";
     }
 
     @Autowired
