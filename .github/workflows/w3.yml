@@ -1,13 +1,9 @@
 name: workflow 3
 
-##on:
-##  create:
-##    branches:
-##      - release-*
 on:
-  pull_request:
+  create:
     branches:
-      - master
+      - release-*
 jobs:
 
   build:
