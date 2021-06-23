@@ -21,24 +21,7 @@ jobs:
           java-version: 11
       - name: Build project with maven
         run: mvn -B package -DskipTests
-      - name: 'Upload Artifact'
-        uses: actions/upload-artifact@v2
-        with:
-          name: target
-          path: target/*.jar
-          retention-days: 1
-      
-  Ejecucion_test:
-    name: ejecutar Test Unitarios y API REST
-    runs-on: ubuntu-20.04
-    needs: [build]
-    steps:
-      - name: Clone repository
-        uses: actions/checkout@v2
-      - name: Download Jar from previous job
-        uses: actions/download-artifact@v1
-        with:
-          name: target
+
       - name: Ejecucion Test Unitarios
         run: mvn -B '-Dtest=es.urjc.code.daw.library.unitary.*Test' test
 
@@ -47,12 +30,18 @@ jobs:
       
       - name: Ejecucion Test Selenium
         run: mvn -B '-Dtest=es.urjc.code.daw.library.e2e.selenium.*Test' test
+      - name: 'Upload Artifact'
+        uses: actions/upload-artifact@v2
+        with:
+          name: target
+          path: target/*.jar
+          retention-days: 1
     
 
   publish_in_heroku_registry:
     name: Publish in Heroku Registry
     runs-on: ubuntu-20.04
-    needs: [Ejecucion_test]
+    needs: [build]
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
       HEROKU_APP: ${{ secrets.HEROKU_APP }}
