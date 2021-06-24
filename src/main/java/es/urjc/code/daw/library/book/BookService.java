@@ -14,11 +14,13 @@ import es.urjc.code.daw.library.notification.NotificationService;
 public class BookService {
 
 	private BookRepository repository;
+	private LineBreaker lineBreaker;
 	private NotificationService notificationService;
 
-	public BookService(BookRepository repository, NotificationService notificationService){
+	public BookService(BookRepository repository, NotificationService notificationService,LineBreaker lineBreaker){
 		this.repository = repository;
 		this.notificationService = notificationService;
+		this.lineBreaker = lineBreaker;
 	}
 
 	public Optional<Book> findOne(long id) {
@@ -34,6 +36,9 @@ public class BookService {
 	}
 
 	public Book save(Book book) {
+		
+		book.setDescription(lineBreaker.breakLine(book.getDescription(),10));
+
 		Book newBook = repository.save(book);
 		notificationService.notify("Book Event: book with title="+newBook.getTitle()+" was created");
 		return newBook;
