@@ -1,11 +1,8 @@
 name: por la noche
 
 on: 
-  #schedule:
-  #  - cron: '00 22 * * *'  
-  pull_request:
-    branches:
-      - master 
+  schedule:
+    - cron: '00 22 * * *'  
 jobs:
 
   build:

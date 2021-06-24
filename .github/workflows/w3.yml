@@ -1,11 +1,9 @@
 name: workflow 3
 
 on:
-  #create:
-  push:
+  create:
     branches:
-     # - release-*
-      - master
+     - release-*
 jobs:
 
   build:
@@ -50,14 +48,9 @@ jobs:
       - name: Generate tag
         run: echo ::set-output name=tag::$(mvn -q help:evaluate -Dexpression=project.version -DforceStdout)
         id: project
-      #- name: Get version
-      #  run: VERSION=$(mvn -q help:evaluate -Dexpression=project.version-DforceStdout)
-      #- name: Generate tag
-      #  run: echo ::set-output name=tag::$(VERSION)
-      #  id: project
       - name: Login to DockerHub
         run: docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Build image
-        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ais-a.elisimaili-je.blanquer${{ steps.project.outputs.tag }} .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ais-a.elisimaili-je.blanquer ${{ steps.project.outputs.tag }} .
       - name: Push image to DockerHub
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ais-a.elisimaili-je.blanquer${{ steps.project.outputs.tag }}
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/ais-a.elisimaili-je.blanquer ${{ steps.project.outputs.tag }}
