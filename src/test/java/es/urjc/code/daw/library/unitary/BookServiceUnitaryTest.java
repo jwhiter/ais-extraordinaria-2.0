@@ -19,13 +19,15 @@ public class BookServiceUnitaryTest {
     private BookService bookService;
     private NotificationService notificationService;
     private BookRepository repository;
+    private LineBreaker lineB;
 
     @BeforeEach
 	public void setup() {
         
         repository = mock(BookRepository.class);
         notificationService = mock(NotificationService.class);
-        bookService = new BookService(repository, notificationService);
+        lineB = mock(LineBreaker.class);
+        bookService = new BookService(repository, notificationService, lineB);
 			
     }
 
