@@ -1,11 +1,8 @@
 name: por la noche
 
 on: 
-  #schedule:
-  #  - cron: '00 22 * * *'  
-  pull_request:
-    branches:
-      - master 
+  schedule:
+    - cron: '00 22 * * *'  
 jobs:
 
   build:
@@ -32,7 +29,7 @@ jobs:
       - name: Ejecucion Test API REST
         run: mvn -B '-Dtest=es.urjc.code.daw.library.e2e.rest.*Test' test
       
-      - name: Ejecucion Test Selenum
+      - name: Ejecucion Test Selenium
         run: mvn -B '-Dtest=es.urjc.code.daw.library.e2e.selenium.*Test' test
   
   publish_in_dockerhub:

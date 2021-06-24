@@ -1,7 +1,7 @@
 name: heroku workflow
 
 on: 
-  pull_request:
+  push:
     branches:
       - master
 jobs:
@@ -65,7 +65,7 @@ jobs:
 
   deploy_to_heroku:
     name: Deploy to Heroku
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [publish_in_heroku_registry]
     env:
       HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
@@ -80,7 +80,7 @@ jobs:
 
   ejecutando_smoke_test:
     name: Smoke test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [deploy_to_heroku]
     steps:
       - name: Checkout commit
